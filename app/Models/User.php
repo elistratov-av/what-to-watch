@@ -13,6 +13,9 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const ROLE_USER = 0;
+    public const ROLE_MODERATOR = 1;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
     ];
 
     /**
@@ -32,6 +36,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $visible = [
+        'name',
+        'avatar',
     ];
 
     /**
@@ -45,5 +54,31 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function films(): BelongsToMany
+    {
+        return $this->belongsToMany(Film::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function setPasswordAttribute($value){
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function isModerator() {
+        return $this->role_id === self::ROLE_MODERATOR;
+    }
+
+    /**
+     * Проверка есть ли указанный фильм в списке избранных.
+     */
+    public function hasFilm(Film $film): bool
+    {
+        return $this->films()->where('film_id', $film->id)->exists();
     }
 }
