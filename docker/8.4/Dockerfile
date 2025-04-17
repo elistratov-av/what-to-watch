@@ -26,6 +26,7 @@ RUN apt-get update && apt-get upgrade -y \
     && curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xb8dc7e53946656efbce4c1dd71daeaab4ad4cab6' | gpg --dearmor | tee /etc/apt/keyrings/ppa_ondrej_php.gpg > /dev/null \
     && echo "deb [signed-by=/etc/apt/keyrings/ppa_ondrej_php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu noble main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
     && apt-get update \
+    && apt-get install net-tools \
     && apt-get install -y php8.4-cli php8.4-dev \
        php8.4-pgsql php8.4-sqlite3 php8.4-gd \
        php8.4-curl php8.4-mongodb \
@@ -61,6 +62,7 @@ RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
+#COPY . /var/www/html
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.4/cli/conf.d/99-sail.ini
