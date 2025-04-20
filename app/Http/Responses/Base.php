@@ -4,8 +4,8 @@ namespace App\Http\Responses;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Base implements Responsable
 {
@@ -15,10 +15,8 @@ abstract class Base implements Responsable
     ) {}
 
     /**
-     * Create an HTTP response that represents the object.
-     *
-     * @param  Request $request
-     * @return Response
+     * @param $request
+     * @return JsonResponse|Response
      */
     public function toResponse($request)
     {
