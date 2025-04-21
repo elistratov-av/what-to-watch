@@ -17,7 +17,8 @@ class GenreFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'created_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
         ];
     }
 }
