@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Film;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -42,6 +43,8 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
+        Gate::authorize('comment-update', $comment);
+
         return $this->success([]);
     }
 
@@ -54,6 +57,11 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        Gate::authorize('comment-delete', $comment);
+
+        $comment->comments()->delete();
+        $comment->delete();
+
         return $this->success([], 201);
     }
 }

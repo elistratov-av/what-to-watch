@@ -47,7 +47,7 @@ Route::controller(FilmController::class)
     });
 
 Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
-Route::patch('/genres/{genre}', [GenreController::class, 'update'])->middleware('auth:sanctum')->name('genres.update'); // todo требует аутентификации
+Route::patch('/genres/{genre}', [GenreController::class, 'update'])->middleware(['auth:sanctum', 'role:isModerator'])->name('genres.update'); // todo требует аутентификации
 
 Route::controller(FavoriteController::class)
     ->middleware('auth:sanctum')
@@ -67,4 +67,4 @@ Route::controller(CommentController::class)
     });
 
 Route::get('/promo', [PromoController::class, 'show'])->name('promo.show');
-Route::post('/promo/{film}', [PromoController::class, 'store'])->middleware('auth:sanctum')->name('promo.store'); // todo требует аутентификации
+Route::post('/promo/{film}', [PromoController::class, 'store'])->middleware(['auth:sanctum', 'role:isModerator'])->name('promo.store'); // todo требует аутентификации
