@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\RequestException;
 use App\Models\Film;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
@@ -16,7 +18,9 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        return $this->success([]);
+        $films = Auth::user()->films()->get(Film::LIST_FIELDS)->toArray();
+
+        return $this->success($films);
     }
 
     /**
@@ -29,7 +33,12 @@ class FavoriteController extends Controller
      */
     public function store(Request $request, Film $film)
     {
-        return $this->success([], 201);
+        $user = Auth::user();
+        throw_if($user->hasFilm($film), new RequestException("Переданный фильм уже в избранном"));
+
+        $user->films()->attach($film);
+
+        return $this->success(null, 201);
     }
 
     /**
@@ -41,6 +50,11 @@ class FavoriteController extends Controller
      */
     public function destroy(Film $film)
     {
-        return $this->success([], 201);
+        $user = Auth::user();
+        throw_unless($user->hasFilm($film), new RequestException("Переданный фильм не находится избранном"));
+
+        $user->films()->detach($film);
+
+        return $this->success(null, 201);
     }
 }

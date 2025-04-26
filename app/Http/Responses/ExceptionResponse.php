@@ -9,15 +9,26 @@ class ExceptionResponse extends Fail
 {
     public int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
+//    /**
+//     * ExceptionResponse constructor.
+//     *
+//     * @param Throwable $exception
+//     * @param int|null $code
+//     */
+//    public function __construct(protected Throwable $exception, int $code = null)
+//    {
+//        parent::__construct([], $exception->getMessage(), $code ?? $this->getCode());
+//    }
+
     /**
      * ExceptionResponse constructor.
      *
      * @param Throwable $exception
      * @param int|null $code
      */
-    public function __construct(protected Throwable $exception, int $code = null)
+    public function __construct(protected Throwable $exception, ?string $message = null, int $code = null)
     {
-        parent::__construct([], $exception->getMessage(), $code ?? $this->getCode());
+        parent::__construct([], $message ?? $exception->getMessage(), $code ?? $this->getCode());
     }
 
     /**
@@ -47,6 +58,7 @@ class ExceptionResponse extends Fail
 
     private function getCode()
     {
-        return method_exists($this->exception, 'getStatusCode') ? $this->exception->getStatusCode() : $this->statusCode;
+        $code = method_exists($this->exception, 'getStatusCode') ? $this->exception->getStatusCode() : $this->statusCode;
+        return $code;
     }
 }
