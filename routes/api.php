@@ -41,9 +41,9 @@ Route::get('/films/{film}/similar', [FilmController::class, 'similar'])->name('f
 Route::controller(FilmController::class)
     ->group(function () {
         Route::get('/films', 'index')->name('films.index');
-        Route::post('/films', 'store')->middleware('auth:sanctum')->name('films.store'); // todo требует аутентификации
+        Route::post('/films', 'store')->middleware(['auth:sanctum', 'role:isModerator'])->name('films.store'); // todo требует аутентификации
         Route::get('/films/{film}', 'show')->name('films.show'); // todo доп повеление для аутентифицированного пользователя
-        Route::patch('/films/{film}', 'update')->middleware('auth:sanctum')->name('films.update'); // todo требует аутентификации
+        Route::patch('/films/{film}', 'update')->middleware(['auth:sanctum', 'role:isModerator'])->name('films.update'); // todo требует аутентификации
     });
 
 Route::get('/genres', [GenreController::class, 'index'])->name('genres.index');
