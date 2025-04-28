@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Film;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,5 +27,14 @@ class FilmFactory extends Factory
             'released' => fake()->year(),
             'imdb_id' => 'tt00' . random_int(1, 9999),
         ];
+    }
+
+    public function pending()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => Film::STATUS_PENDING,
+            ];
+        });
     }
 }

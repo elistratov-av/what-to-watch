@@ -3,13 +3,14 @@
 use App\Exceptions\RequestException;
 use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Responses\ExceptionResponse;
-use App\Models\User;
+use App\Jobs\FetchLastComments;
+use App\Jobs\UpdateFilms;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Schedule;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))

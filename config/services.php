@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'academy' => [
+        'films' => [
+            'url' => env('EXT_API_FILMS', 'http://academy.localhost/api/films/')
+        ],
+        'comments' => [
+            'url' => env('EXT_API_COMMENTS', 'http://academy.localhost/api/comments/')
+        ],
+    ],
+
+    'omdb' => [
+        'films' => [
+            'url' => trim(env('OMDB_API_FILMS', 'http://www.omdbapi.com'), '/') . '/?apikey=' . env('OMDB_API_KEY', '1a11fdad')
+        ]
+    ]
+
 ];

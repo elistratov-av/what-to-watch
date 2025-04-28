@@ -34,4 +34,16 @@ class CommentFactory extends Factory
             ];
         });
     }
+
+    public function external()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'film_id' => null,
+                'user_id' => null,
+                'rating' => null,
+                'created_at' => $this->faker->dateTimeBetween(),
+            ];
+        });
+    }
 }

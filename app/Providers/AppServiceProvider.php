@@ -3,11 +3,18 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Support\Import\AcademyCommentsRepository;
+use App\Support\Import\AcademyFilmsRepository;
+use App\Support\Import\CommentsRepository;
+use App\Support\Import\FilmsRepository;
+use App\Support\Import\OmdbFilmsRepository;
+use GuzzleHttp\Client;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Psr\Http\Client\ClientInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(ClientInterface::class, Client::class);
+        $this->app->bind(FilmsRepository::class, OmdbFilmsRepository::class);
+        $this->app->bind(CommentsRepository::class, AcademyCommentsRepository::class);
     }
 
     /**
